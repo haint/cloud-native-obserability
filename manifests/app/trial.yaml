@@ -16,6 +16,7 @@ spec:
       - name: trial
         # We advise you to build, push and use your own image, instead of using instructor's image.
         image: haithanh86/trial:v1
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "128Mi"

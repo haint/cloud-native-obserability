@@ -16,7 +16,7 @@ config = Config(
         'logging': True,
         'reporter_batch_size': 1
     },
-    service_name = 'service'
+    service_name = 'service_backend'
 )
 jaeger_tracer = config.initialize_tracer()
 tracing = FlaskTracing(jaeger_tracer, True, app)

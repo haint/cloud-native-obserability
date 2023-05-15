@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: trial-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: trial
@@ -15,7 +15,11 @@ spec:
       containers:
       - name: trial
         # We advise you to build, push and use your own image, instead of using instructor's image.
-        image: ghcr.io/jasonsmithio/trial:v1
+        image: haithanh86/trial:v1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 8080
 ---

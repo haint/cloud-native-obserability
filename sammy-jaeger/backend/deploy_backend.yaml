@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: do-visit-counter-backend
+spec:
+  selector:
+    matchLabels:
+      app: do-visit-counter-backend
+  template:
+    metadata:
+      labels:
+        app: do-visit-counter-backend
+    spec:
+      containers:
+      - name: do-visit-counter-backend
+        image: haithanh86/do-visit-counter-backend:v1
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+          - name: backend-port
+            containerPort: 5000
+            protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: do-visit-counter-backend
+spec:
+  selector:
+    app: do-visit-counter-backend
+  ports:
+  - port: 5000
+    targetPort: 5000
+

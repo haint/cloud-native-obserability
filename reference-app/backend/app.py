@@ -2,8 +2,24 @@ from flask import Flask, render_template, request, jsonify
 
 import pymongo
 from flask_pymongo import PyMongo
+from jaeger_client import Config
+from flask_opentracing import FlaskTracing
 
 app = Flask(__name__)
+
+config = Config(
+    config = {
+        'sampler': {
+            'type': 'const',
+            'param': 1
+        },
+        'logging': True,
+        'reporter_batch_size': 1
+    },
+    service_name = 'backend'
+)
+jaeger_tracer = config.initialize_tracer()
+tracing = FlaskTracing(jaeger_tracer, True, app)
 
 app.config["MONGO_DBNAME"] = "example-mongodb"
 app.config[

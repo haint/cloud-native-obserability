@@ -11,12 +11,12 @@ def homepage():
 @app.route("/backend")
 def backend():
     response = requests.get("http://backend.default.svc.cluster.local:8081/")
-    return response
+    return response.text
 
 @app.route("/trial")
 def trail():
     response = requests.get("http://trial.default.svc.cluster.local:8082/")
-    return response
+    return response.text
 
 
 if __name__ == "__main__":

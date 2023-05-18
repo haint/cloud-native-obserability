@@ -4,6 +4,15 @@
 
 *TODO:* run `kubectl` command to show the running pods and services for all components. Take a screenshot of the output and include it here to verify the installation
 
+### Pods in all Namespaces
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo1.1.png">
+
+### Services in all Namespaces
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo1.2.png">
+
+### Pods and Services in Monitoring and Observability Namespaces
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo1.3.png">
+
 ## Setup the Jaeger and Prometheus source
 *TODO:* Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
 

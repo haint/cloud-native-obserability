@@ -15,9 +15,11 @@
 
 ## Setup the Jaeger and Prometheus source
 *TODO:* Expose Grafana to the internet and then setup Prometheus as a data source. Provide a screenshot of the home page after logging into Grafana.
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo2.1.png">
 
 ## Create a Basic Dashboard
 *TODO:* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo3.1.png">
 
 ## Describe SLO/SLI
 *TODO:* Describe, in your own words, what the SLIs are, based on an SLO of *monthly uptime* and *request response time*.

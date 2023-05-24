@@ -42,33 +42,53 @@
 
 ## Tracing our Flask App
 *TODO:*  We will create a Jaeger span to measure the processes on the backend. Once you fill in the span, provide a screenshot of it here. Also provide a (screenshot) sample Python file containing a trace and span code used to perform Jaeger traces on the backend service.
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo7.1.png">
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo7.2.png">
 
 ## Jaeger in Dashboards
 *TODO:* Now that the trace is running, let's add the metric to our current Grafana dashboard. Once this is completed, provide a screenshot of it here.
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo8.1.png">
 
 ## Report Error
 *TODO:* Using the template below, write a trouble ticket for the developers, to explain the errors that you are seeing (400, 500, latency) and to let them know the file that is causing the issue also include a screenshot of the tracer span to demonstrate how we can user a tracer to locate errors easily.
 
 TROUBLE TICKET
 
-Name:
+Name: Ethan Nguyen
 
-Date:
+Date: 24 May 2023
 
-Subject:
+Subject: Backend Service get star shows "Internal Server Error" error 500.
 
-Affected Area:
+Affected Area: star enpoint
 
-Severity:
+Severity: High
 
-Description:
+Description: No implementation to get star
 
 
 ## Creating SLIs and SLOs
 *TODO:* We want to create an SLO guaranteeing that our application has a 99.95% uptime per month. Name four SLIs that you would use to measure the success of this SLO.
 
+  # SLO
+  1. 99.95% of uptime per month
+  2. 99.9% of responses to our front-service will return 2xx, 3xx or 4xx HTTP code within 2000 ms.
+  3. 99.99% of transaction requests will succeed over any calendar month.
+  4. 99.9% of backend service requests will succeed on their first attempt.
+
+
+  # SLI
+  1. less than 10 error responses in the last 24 hours.
+  2. average response time of < 2000ms per minute.
+  3. 75% more successful responses than errors.
+  4. 99% of our responses had the right data format.
+
+
 ## Building KPIs for our plan
 *TODO*: Now that we have our SLIs and SLOs, create a list of 2-3 KPIs to accurately measure these metrics as well as a description of why those KPIs were chosen. We will make a dashboard for this, but first write them down here.
 
+
 ## Final Dashboard
-*TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.  
+*TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.
+
+

@@ -3,23 +3,28 @@ from flask import Flask, render_template, request, jsonify
 import pymongo
 from flask_pymongo import PyMongo
 from jaeger_client import Config
-from flask_opentracing import FlaskTracing
+from flask_opentracing import FlaskTracer
+from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
+
+import json
+import logging
+import opentracing
+
+def initialize_tracer():
+    """
+    Initializes an instance of the Jaeger tracer.
+    """
+
+    logging.getLogger("").handlers = []
+    logging.basicConfig(format="%(message)s", level=logging.DEBUG)
+
+    open_tracing_config = {"sampler": {"type": "const", "param": 1}, "logging": True}
+    tracer_config = Config(open_tracing_config, service_name="backend")
+
+    return tracer_config.initialize_tracer()
+
 
 app = Flask(__name__)
-
-config = Config(
-    config = {
-        'sampler': {
-            'type': 'const',
-            'param': 1
-        },
-        'logging': True,
-        'reporter_batch_size': 1
-    },
-    service_name = 'backend'
-)
-jaeger_tracer = config.initialize_tracer()
-tracing = FlaskTracing(jaeger_tracer, True, app)
 
 app.config["MONGO_DBNAME"] = "example-mongodb"
 app.config[
@@ -28,27 +33,56 @@ app.config[
 
 mongo = PyMongo(app)
 
+flask_tracer = FlaskTracer(initialize_tracer, True, app)
+flask_tracer_span = flask_tracer.get_span()
+
+metrics = GunicornInternalPrometheusMetrics(app)
+
+
 
 @app.route("/")
 def homepage():
-    return "Hello World"
+    with opentracing.tracer.start_span(
+        "home-endpoint", child_of=flask_tracer_span
+    ) as span:
+        response = {"message": "Home World"}
+        span.set_tag("message", response)
+
+        return jsonify(response)
+
 
 
 @app.route("/api")
 def my_api():
-    answer = "something"
-    return jsonify(repsonse=answer)
+    with opentracing.tracer.start_span(
+        "api-endpoint", child_of=flask_tracer_span
+    ) as span:
+        response = {"message": "API endpoint"}
+        span.set_tag("message", response)
+
+        return jsonify(response)
 
 
-@app.route("/star", methods=["POST"])
+@@app.route("/star", methods=["POST"])
 def add_star():
-    star = mongo.db.stars
-    name = request.json["name"]
-    distance = request.json["distance"]
-    star_id = star.insert({"name": name, "distance": distance})
-    new_star = star.find_one({"_id": star_id})
-    output = {"name": new_star["name"], "distance": new_star["distance"]}
-    return jsonify({"result": output})
+    with opentracing.tracer.start_span(
+        "star-endpoint", child_of=flask_tracer_span
+    ) as span:
+        try:
+            star = mongo.db.stars
+            name = request.json["name"]
+            distance = request.json["distance"]
+            star_id = star.insert({"name": name, "distance": distance})
+            new_star = star.find_one({"_id": star_id})
+            output = {"name": new_star["name"], "distance": new_star["distance"]}
+
+            response = jsonify({"result": output})
+            span.set_tag("message", json.dumps(response))
+
+            return response
+        except:
+            span.set_tag("response", "Can't retrieve output from database")
+
 
 
 if __name__ == "__main__":

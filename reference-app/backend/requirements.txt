@@ -7,3 +7,4 @@ Flask-PyMongo
 prometheus-client
 jaeger_client
 flask_opentracing
+prometheus-flask-exporter

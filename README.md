@@ -20,15 +20,25 @@
 ## Create a Basic Dashboard
 *TODO:* Create a dashboard in Grafana that shows Prometheus as a source. Take a screenshot and include it here.
 <img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo3.1.png">
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo3.2.png">
 
 ## Describe SLO/SLI
 *TODO:* Describe, in your own words, what the SLIs are, based on an SLO of *monthly uptime* and *request response time*.
+- To indicate SLO *monthly uptime*, we need SLI is the rate of the 20x or 30x (valid requests) responses of the website in a total incoming requests per month
+- To indicate SLO *request response time 700ms*, we need SLI for a request response time is how long the request took to be served in actuality.
 
 ## Creating SLI metrics.
-*TODO:* It is important to know why we want to measure certain metrics for our customer. Describe in detail 5 metrics to measure these SLIs. 
+*TODO:* It is important to know why we want to measure certain metrics for our customer. Describe in detail 5 metrics to measure these SLIs.
+
+1. The average 20x or 30x responses of the web application
+2. It took an average of 700ms for incoming requests to be served
+3. 1.5% of the total incoming requests had 50x responses
+4. The average CPU usage of the web application
+5. The login requests in the web application for a month took an average of 2 seconds to be served
 
 ## Create a Dashboard to measure our SLIs
 *TODO:* Create a dashboard to measure the uptime of the frontend and backend services We will also want to measure to measure 40x and 50x errors. Create a dashboard that show these values over a 24 hour period and take a screenshot.
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo6.1.png">
 
 ## Tracing our Flask App
 *TODO:*  We will create a Jaeger span to measure the processes on the backend. Once you fill in the span, provide a screenshot of it here. Also provide a (screenshot) sample Python file containing a trace and span code used to perform Jaeger traces on the backend service.

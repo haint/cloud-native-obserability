@@ -1,88 +1,74 @@
+import opentracing.tracer
 from flask import Flask, render_template, request, jsonify
-
-import pymongo
 from flask_pymongo import PyMongo
-from jaeger_client import Config
-from flask_opentracing import FlaskTracer
-from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
-
-import json
 import logging
-import opentracing
+from jaeger_client import Config
+from flask_opentracing import FlaskTracing
 
-def initialize_tracer():
-    """
-    Initializes an instance of the Jaeger tracer.
-    """
 
-    logging.getLogger("").handlers = []
-    logging.basicConfig(format="%(message)s", level=logging.DEBUG)
+# Added initialize trace function
+def init_tracer(service):
+    logging.getLogger('').handlers = []
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
-    open_tracing_config = {"sampler": {"type": "const", "param": 1}, "logging": True}
-    tracer_config = Config(open_tracing_config, service_name="backend")
+    config = Config(
+        config={
+            'sampler': {
+                'type': 'const',
+                'param': 1,
+            },
+            'logging': True,
+        },
+        service_name=service,
+    )
 
-    return tracer_config.initialize_tracer()
+    # this call also sets opentracing.tracer
+    return config.initialize_tracer()
 
 
 app = Flask(__name__)
 
-app.config["MONGO_DBNAME"] = "example-mongodb"
-app.config[
-    "MONGO_URI"
-] = "mongodb://example-mongodb-svc.default.svc.cluster.local:27017/example-mongodb"
+app.config['MONGO_DBNAME'] = 'example-mongodb'
+app.config['MONGO_URI'] = 'mongodb://example-mongodb-svc.default.svc.cluster.local:27017/example-mongodb'
 
 mongo = PyMongo(app)
 
-flask_tracer = FlaskTracer(initialize_tracer, True, app)
-flask_tracer_span = flask_tracer.get_span()
-
-metrics = GunicornInternalPrometheusMetrics(app)
-
+tracer = init_tracer('backend')
+tracing = FlaskTracing(tracer, True, app)
+parent_span = tracing.get_span()
 
 
-@app.route("/")
+@app.route('/')
 def homepage():
-    with opentracing.tracer.start_span(
-        "home-endpoint", child_of=flask_tracer_span
-    ) as span:
-        response = {"message": "Home World"}
-        span.set_tag("message", response)
-
-        return jsonify(response)
+    with opentracing.tracer.start_span("homepage", child_of=parent_span) as span:
+        response = {"message": "homepage"}
+        span.set_tag('message', response)
+        return "Hello World"
 
 
-
-@app.route("/api")
+@app.route('/api')
 def my_api():
-    with opentracing.tracer.start_span(
-        "api-endpoint", child_of=flask_tracer_span
-    ) as span:
-        response = {"message": "API endpoint"}
+    with opentracing.tracer.start_span("api", child_of=parent_span) as span:
+        response = {"message": "api"}
         span.set_tag("message", response)
 
-        return jsonify(response)
+        answer = "something"
+        return jsonify(response=answer)
 
 
-@@app.route("/star", methods=["POST"])
+@app.route('/star', methods=['POST'])
 def add_star():
-    with opentracing.tracer.start_span(
-        "star-endpoint", child_of=flask_tracer_span
-    ) as span:
+    with opentracing.tracer.start_span("star", child_of=parent_span) as span:
         try:
             star = mongo.db.stars
-            name = request.json["name"]
-            distance = request.json["distance"]
-            star_id = star.insert({"name": name, "distance": distance})
-            new_star = star.find_one({"_id": star_id})
-            output = {"name": new_star["name"], "distance": new_star["distance"]}
-
-            response = jsonify({"result": output})
-            span.set_tag("message", json.dumps(response))
-
-            return response
+            name = request.json['name']
+            distance = request.json['distance']
+            star_id = star.insert({'name': name, 'distance': distance})
+            new_star = star.find_one({'_id': star_id})
+            output = {'name': new_star['name'], 'distance': new_star['distance']}
+            return jsonify({'result': output})
         except:
-            span.set_tag("response", "Can't retrieve output from database")
-
+            span.set_tag("response", "Error: cannot access the database.")
 
 
 if __name__ == "__main__":

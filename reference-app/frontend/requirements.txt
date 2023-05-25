@@ -2,3 +2,4 @@ Flask
 requests
 pylint
 gunicorn
+prometheus-flask-exporter

@@ -87,7 +87,16 @@ Description: No implementation to get star
 ## Building KPIs for our plan
 *TODO*: Now that we have our SLIs and SLOs, create a list of 2-3 KPIs to accurately measure these metrics as well as a description of why those KPIs were chosen. We will make a dashboard for this, but first write them down here.
 
-
+1. We got less than 10 error responses in the last 24 hours.
+    + Successful requests per minute:  this KPI indicates how well is performed our system.
+    + Error requests per minute: this KPI is an analogous of this SLI.
+    + Uptime - this KPI indicates if errors are comming from downtime or not.
+2. We got an average response time of < 2000ms in the las 24 hours.
+    + Average response time:  this KPI is an analogous of this SLI.
+    + Uptime - this KPI will help us to determine if response time is affected by downtime of a service.
+3. We got 75% more successful responses than errors.
+    + Successful requests per minute:  this KPI indicates the number of successful request.
+    + Error requests per minute: this KPI indicates the number of error requests.
 ## Final Dashboard
 *TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.
 

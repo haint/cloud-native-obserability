@@ -3,8 +3,8 @@ import random
 import threading
 import requests
 
-endpoints = ("one", "two", "three", "four", "error")
-HOST = "http://192.168.60.97:8080/"
+endpoints = ("/", "star")
+HOST = "http://192.168.60.97:8081/"
 
 
 def run():

@@ -1,19 +1,9 @@
-# Use the official Python image.
-# https://hub.docker.com/_/python
-FROM python:3.7-slim
+FROM python:3.11-alpine
 
-# Copy local code to the container image.
-COPY . /app
-WORKDIR /app
+ADD requirements.txt /tmp/requirements.txt
 
-# Prometheus exporter vars
-ENV PROMETHEUS_MULTIPROC_DIR /app
-ENV prometheus_multiproc_dir /app
+RUN pip install -r /tmp/requirements.txt
 
+ADD app.py /var/server/app.py
 
-# Install production dependencies.
-RUN apt-get update && \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
-
-CMD ["gunicorn", "--access-logfile", "-", "--error-logfile", "-", "-c", "config.py", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
+CMD python /var/server/app.py

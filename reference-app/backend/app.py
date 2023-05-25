@@ -1,79 +1,45 @@
 import time
 import random
-import logging
-import opentracing.tracer
 
-from jaeger_client import Config
 from flask import Flask
 from prometheus_flask_exporter import PrometheusMetrics
-from flask_pymongo import PyMongo
-from flask_opentracing import FlaskTracing
 
 
 app = Flask(__name__)
 PrometheusMetrics(app)
 
-# Added initialize trace function
-def init_tracer(service):
-    logging.getLogger('').handlers = []
-    logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
-    config = Config(
-        config={
-            'sampler': {
-                'type': 'const',
-                'param': 1,
-            },
-            'logging': True,
-        },
-        service_name=service,
-    )
-
-    # this call also sets opentracing.tracer
-    return config.initialize_tracer()
-
-app.config['MONGO_DBNAME'] = 'example-mongodb'
-app.config['MONGO_URI'] = 'mongodb://example-mongodb-svc.default.svc.cluster.local:27017/example-mongodb'
-
-mongo = PyMongo(app)
-
-tracer = init_tracer('backend')
-tracing = FlaskTracing(tracer, True, app)
-parent_span = tracing.get_span()
+endpoints = ("one", "two", "three", "four", "five", "error")
 
 
-@app.route('/')
-def homepage():
-    with opentracing.tracer.start_span("homepage", child_of=parent_span) as span:
-        response = {"message": "homepage"}
-        span.set_tag('message', response)
-        return "Hello World"
+@app.route("/one")
+def first_route():
+    time.sleep(random.random() * 0.2)
+    return "ok"
 
 
-@app.route('/api')
-def my_api():
-    with opentracing.tracer.start_span("api", child_of=parent_span) as span:
-        response = {"message": "api"}
-        span.set_tag("message", response)
-
-        answer = "something"
-        return jsonify(response=answer)
+@app.route("/two")
+def the_second():
+    time.sleep(random.random() * 0.4)
+    return "ok"
 
 
-@app.route('/star', methods=['POST'])
-def add_star():
-    with opentracing.tracer.start_span("star", child_of=parent_span) as span:
-        try:
-            star = mongo.db.stars
-            name = request.json['name']
-            distance = request.json['distance']
-            star_id = star.insert({'name': name, 'distance': distance})
-            new_star = star.find_one({'_id': star_id})
-            output = {'name': new_star['name'], 'distance': new_star['distance']}
-            return jsonify({'result': output})
-        except:
-            span.set_tag("response", "Error: cannot access the database.")
+@app.route("/three")
+def test_3rd():
+    time.sleep(random.random() * 0.6)
+    return "ok"
+
+
+@app.route("/four")
+def fourth_one():
+    time.sleep(random.random() * 0.8)
+    return "ok"
+
+
+@app.route("/error")
+def oops():
+    return ":(", 500
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run("0.0.0.0", 8080, threaded=True)

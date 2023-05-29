@@ -52,6 +52,10 @@
 ## Report Error
 *TODO:* Using the template below, write a trouble ticket for the developers, to explain the errors that you are seeing (400, 500, latency) and to let them know the file that is causing the issue also include a screenshot of the tracer span to demonstrate how we can user a tracer to locate errors easily.
 
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo9.1.png">
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo9.2.png">
+<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/todo9.3.png">
+
 TROUBLE TICKET
 
 Name: Ethan Nguyen

@@ -56,15 +56,15 @@ TROUBLE TICKET
 
 Name: Ethan Nguyen
 
-Date: 24 May 2023
+Date: 29 May 2023
 
-Subject: Backend Service get star shows "Internal Server Error" error 500.
+Subject: Backend Service create star shows "Internal Server Error" error 500.
 
 Affected Area: star enpoint
 
 Severity: High
 
-Description: No implementation to get star
+Description: Cannot access database. The tracer span is aae432d3a8a3d6f8
 
 
 ## Creating SLIs and SLOs

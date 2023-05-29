@@ -102,5 +102,3 @@ Description: No implementation to get star
 
 <img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/final_dashboard.png">
 <img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/final_dashboard_2.png">
-
-

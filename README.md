@@ -105,4 +105,3 @@ Description: Cannot access database. The tracer span is aae432d3a8a3d6f8
 *TODO*: Create a Dashboard containing graphs that capture all the metrics of your KPIs and adequately representing your SLIs and SLOs. Include a screenshot of the dashboard here, and write a text description of what graphs are represented in the dashboard.
 
 <img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/final_dashboard.png">
-<img src="https://raw.githubusercontent.com/haint/cloud-native-obserability/main/answer_img/final_dashboard_2.png">

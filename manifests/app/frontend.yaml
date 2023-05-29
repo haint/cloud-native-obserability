@@ -22,7 +22,9 @@ spec:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+          - name: frontnedport
+            protocol: TCP
+            containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -32,8 +34,10 @@ spec:
   selector:
     app: frontend
   ports:
-    - port: 8080
-      targetPort: 8080
+    - name: frontend
+      port: 8080
+      protocol: TCP
+      targetPort: frontnedport
   type: LoadBalancer
 ---
 apiVersion: monitoring.coreos.com/v1

@@ -22,5 +22,10 @@ def trail():
     return response.text
 
 
+@app.route("/error")
+def oops():
+    return ":(", 500
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run("0.0.0.0", 8080, threaded=True)
